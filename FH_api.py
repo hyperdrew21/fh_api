@@ -70,18 +70,18 @@ def get_users():
 
 @app.route("/userpass/<id>", methods=["PUT"])
 def up_pass(id):
-    user = User.query.get(id)
+    userpass = User.query.get(id)
     
     password = request.json['password']
     
-    user.password = password
+    userpass.password = password
     
     db.session.commit()
     return "Successfully updated password!"
 
 @app.route("/userinfo/<id>", methods=["PUT"])
 def user_info(id):
-    user = User.query.get(id)
+    userinfo = User.query.get(id)
     
     email = request.json['email']
     name = request.json['name']
@@ -91,17 +91,27 @@ def user_info(id):
     state = request.json['state'] 
     zipcode = request.json['zipcode']   
     
-    user.email = "email"
-    user.name = "name"
-    user.streetAddress1 = "streetAddress1"
-    user.streetAddress2 = "streetAddress2"
-    user.city = "city"
-    user.state = "state"
-    user.zipcode = "zipcode"
+    userinfo.email = email
+    userinfo.name = name
+    userinfo.streetAddress1 = streetAddress1
+    userinfo.streetAddress2 = streetAddress2
+    userinfo.city = city
+    userinfo.state = state
+    userinfo.zipcode = zipcode
     
     db.session.commit()
     
     return "Updated info success"
+
+@app.route("/deleteuser/<id>", methods=["DELETE"])
+def user_delete(id):
+    deluser = User.query.get(id)
+    db.session.delete(deluser)
+    db.session.commit()
+    
+    return "Successfully deleted"
+
+
 
 if __name__ == '__main__': 
     app.run(debug=True)
